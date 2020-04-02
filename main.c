@@ -1,33 +1,28 @@
-#include <string.h>
 #include <stdio.h>
-#include "esp_common.h"
-#include "gpio.h"
+#include <time.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "fsm.h"
-
-#define GPIO_BUTTON 14
-#define GPIO_PIR 12
-#define GPIO_ALARM 2
-
-fsm_t* fsm_new_alarm (int* validp, int pir, int alarm);
-fsm_t* fsm_new_code (int* validp, int button);
-
-static int valid_code = 0;
 
 void printxy (int x, int y, const char* txt);
 
 static void
 reloj (void* ignore)
 {
-    portTickType period =  250 /portTICK_RATE_MS;
+    portTickType period =  1000 /portTICK_RATE_MS;
+
+    char buf[256];
+
     portTickType last = xTaskGetTickCount();
     while (1) {
-        printxy(1,1,"hola");
+        struct tm* tm_info;
+        time_t t = time(NULL);
+        tm_info = localtime (&t);
+        strftime (buf, 26, "%H:%M:%S ", tm_info);
+        printxy (1, 1, buf);
         vTaskDelayUntil (&last, period);
     }
 }
-
 
 void
 user_init (void)
