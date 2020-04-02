@@ -1,13 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -g -O2 $(DEBUG) -Iinclude -Iinclude/freertos -Ifreertos/portable/GCC/Posix
-LDLIBS = 
+LDLIBS = -lpthread -lrt
 
 # debug options
 #DEBUG='-DDEBUG(x)=x' -include stdio.h
 
-all: main 
+all: main
 
-main:	main.o fsm.o printxy.o tasks.o croutine.o queue.o list.o port.o heap_3.o
+main:	main.o fsm.o fsm_cruce.o printxy.o tasks.o croutine.o queue.o list.o port.o heap_3.o
 
 clean:
 	$(RM) *.o *~ main
